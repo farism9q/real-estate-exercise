@@ -21,3 +21,23 @@ export async function getProperties({
 
   return data;
 }
+
+export async function getProperty(
+  id: string
+): Promise<PropertyItemType | null> {
+  const response = await fetch(
+    `https://65ca332c3b05d29307dfed7b.mockapi.io/properties/${id}`,
+    {
+      method: "GET",
+      headers: { "content-type": "application/json" },
+    }
+  );
+
+  const data = await response.json();
+
+  if (data === "Not found" || !data) {
+    return null;
+  }
+
+  return data;
+}

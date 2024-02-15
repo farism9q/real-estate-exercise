@@ -9,6 +9,7 @@ export default function Navigation() {
       <Link to="/properties">
         <Button
           variant={pathname.startsWith("/properties") ? "default" : "secondary"}
+          className="hover:bg-primary transition-colors duration-300"
         >
           Properties
         </Button>
@@ -16,6 +17,7 @@ export default function Navigation() {
       <Link to="/form">
         <Button
           variant={pathname.startsWith("/form") ? "default" : "secondary"}
+          className="hover:bg-primary transition-colors duration-300"
         >
           New Property
         </Button>

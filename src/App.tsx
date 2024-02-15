@@ -9,6 +9,7 @@ import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import AppLayout from "./components/AppLayout";
 import PropertiesPage from "./pages/PropertiesPage";
 import { ThemeProvider } from "./components/providers/ThemeProvider";
+import PropertyDetail from "./features/property/PropertyDetail";
 
 const router = createBrowserRouter([
   {
@@ -23,6 +24,10 @@ const router = createBrowserRouter([
       {
         path: "properties",
         element: <PropertiesPage />,
+      },
+      {
+        path: "properties/:propertyId",
+        element: <PropertyDetail />,
       },
       {
         path: "form",
