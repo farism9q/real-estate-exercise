@@ -25,7 +25,7 @@ import { useModal } from "../hooks/useStoreModal";
 const formSchema = z.object({
   title: z.string().min(1).max(40),
   features: z.string(),
-  warranties: z.string().min(1),
+  warranties: z.string(),
   description: z
     .string()
     .min(1, { message: "This field is required" })
@@ -43,6 +43,9 @@ interface PropertyFormProps {
 
 export default function PropertyForm({ type, data = null }: PropertyFormProps) {
   const [features, setFeatures] = useState<string[]>(data?.features || []);
+  const [warranties, setWarranties] = useState<string[]>(
+    data?.warranties || []
+  );
   const { createProperty, isCreating } = useCreateProperty();
   const { updateProperty, isUpdating } = useUpdateProperty();
   const { onClose } = useModal();
@@ -55,7 +58,7 @@ export default function PropertyForm({ type, data = null }: PropertyFormProps) {
     form.setValue("address", data?.address || "");
     form.setValue("description", data?.description || "");
     form.setValue("features", ""); // In this case, this field will not throw an error
-    form.setValue("warranties", data?.warranties.join(", ") || "");
+    form.setValue("warranties", "");
     form.setValue("price", data?.price.toString() || "");
   }, [data, type]);
 
@@ -66,14 +69,18 @@ export default function PropertyForm({ type, data = null }: PropertyFormProps) {
   const onSubmit = (values: z.infer<typeof formSchema>) => {
     if (type === "create") {
       features.push(form.getValues("features"));
+      warranties.push(form.getValues("warranties"));
     }
 
     if (type === "edit" && form.getValues("features")) {
       features.push(form.getValues("features"));
     }
 
+    if (type === "edit" && form.getValues("warranties")) {
+      warranties.push(form.getValues("warranties"));
+    }
+
     const price = parseFloat(values.price);
-    const warranties = values.warranties.split(",");
     const submittedForm = {
       ...values,
       features,
@@ -262,28 +269,69 @@ export default function PropertyForm({ type, data = null }: PropertyFormProps) {
             )}
           </div>
 
-          <FormField
-            control={form.control}
-            name="warranties"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel className="uppercase text-xs font-bold text-zinc-500 dark:text-zinc-300 ">
-                  warranties
-                </FormLabel>
-                <FormControl>
-                  <Input
-                    className="bg-zinc-300/50 dark:bg-zinc-300/20 border-0 focus-visible:ring-0 text-black dark:text-white focus-visible:ring-offset-0"
-                    placeholder="10 years warranties, ..., ..., etc "
-                    {...field}
-                  />
-                </FormControl>
-                <p className="text-xs">
-                  Make sure to separate the warranties using the comma (,)
-                </p>
-                <FormMessage />
-              </FormItem>
+          <div className="flex flex-col gap-2">
+            <FormField
+              control={form.control}
+              name="warranties"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="uppercase text-xs font-bold text-zinc-500 dark:text-zinc-300 ">
+                    {"warranty " +
+                      (warranties.length + 1) +
+                      `${type === "edit" ? " ?" : ""}`}
+                  </FormLabel>
+                  <div className="flex items-center gap-1">
+                    <FormControl>
+                      <Input
+                        className="bg-zinc-300/50 dark:bg-zinc-300/20 border-0 focus-visible:ring-0 text-black dark:text-white focus-visible:ring-offset-0"
+                        placeholder="10 years warranties, ..., ..., etc "
+                        {...field}
+                      />
+                    </FormControl>
+
+                    <button
+                      type="button"
+                      className="bg-primary text-white rounded-sm p-[2px]"
+                      onClick={() => {
+                        if (!field.value) return;
+
+                        setFeatures(curr => [field.value, ...curr]);
+                        form.setValue("warranties", "");
+                      }}
+                    >
+                      <Plus size={22} />
+                    </button>
+                  </div>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            {warranties.length > 0 && (
+              <div
+                className={cn(
+                  "p-2 h-20 overflow-scroll no-scrollbar",
+                  type !== "edit" ? "md:w-[25%]" : ""
+                )}
+              >
+                {warranties.map(warranty => (
+                  <div className="flex justify-between items-center px-2">
+                    {warranty}
+
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setWarranties(currWarranties =>
+                          currWarranties.filter(item => item !== warranty)
+                        );
+                      }}
+                    >
+                      <Minus className="text-rose-500" />
+                    </button>
+                  </div>
+                ))}
+              </div>
             )}
-          />
+          </div>
 
           <div className="flex justify-end items-center gap-2">
             <Button type="button" variant="secondary" disabled={isLoading}>

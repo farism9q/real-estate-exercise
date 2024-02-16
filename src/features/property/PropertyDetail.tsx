@@ -24,9 +24,16 @@ export default function PropertyDetail() {
 
   return (
     <div className="h-full flex flex-col py-6 overflow-hidden">
-      <div className="flex justify-end items-center pr-6">
+      <div className="flex justify-end gap-2 items-center px-2">
         <Button onClick={() => onOpen("edit", property)}>Edit</Button>
+        <Button
+          onClick={() => onOpen("delete", { id: property.id })}
+          variant={"destructive"}
+        >
+          Delete
+        </Button>
       </div>
+
       <div className="lg:px-[120px]">
         <Swiper
           modules={[Navigation, Scrollbar, Keyboard]}

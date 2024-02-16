@@ -4,7 +4,7 @@ import PropertyForm from "../components/PropertyForm";
 export default function PropertyFormPage() {
   return (
     <div className="flex flex-col px-28 gap-12 py-6">
-      <Heading title="Create new form" />
+      <Heading title="Create new property" />
 
       <PropertyForm type="create" />
     </div>

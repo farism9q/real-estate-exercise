@@ -79,3 +79,16 @@ export async function updateProperty(id: string, property: PropertyItemType) {
 
   return data;
 }
+
+export async function deleteProperty(id: string) {
+  const response = await fetch(
+    `https://65ca332c3b05d29307dfed7b.mockapi.io/properties/${id}`,
+    {
+      method: "DELETE",
+    }
+  );
+
+  const data = await response.json();
+
+  return data;
+}

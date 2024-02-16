@@ -12,4 +12,4 @@ export type PropertyItemType = {
 
 export type FormType = "create" | "edit";
 
-export type ModalType = "edit"; // TODO add "delete" later
+export type ModalType = "edit" | "delete";
