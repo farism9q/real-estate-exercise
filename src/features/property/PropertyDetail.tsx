@@ -10,9 +10,12 @@ import Empty from "../../components/Empty";
 import "swiper/css";
 import "swiper/css/navigation";
 import "../.././index.css";
+import { Button } from "../../components/ui/button";
+import { useModal } from "../../hooks/useStoreModal";
 
 export default function PropertyDetail() {
   const { property, isLoading } = useProperty();
+  const { onOpen } = useModal();
 
   if (isLoading)
     return <SkeletonPropertyItem screen="propertyDetail" length={1} />;
@@ -21,6 +24,9 @@ export default function PropertyDetail() {
 
   return (
     <div className="h-full flex flex-col py-6 overflow-hidden">
+      <div className="flex justify-end items-center pr-6">
+        <Button onClick={() => onOpen("edit", property)}>Edit</Button>
+      </div>
       <div className="lg:px-[120px]">
         <Swiper
           modules={[Navigation, Scrollbar, Keyboard]}

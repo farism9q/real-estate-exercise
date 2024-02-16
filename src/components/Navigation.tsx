@@ -9,15 +9,17 @@ export default function Navigation() {
       <Link to="/properties">
         <Button
           variant={pathname.startsWith("/properties") ? "default" : "secondary"}
-          className="hover:bg-primary transition-colors duration-300"
+          className="hover:bg-primary hover:text-white transition-colors duration-300"
         >
           Properties
         </Button>
       </Link>
-      <Link to="/form">
+      <Link to="/new-property">
         <Button
-          variant={pathname.startsWith("/form") ? "default" : "secondary"}
-          className="hover:bg-primary transition-colors duration-300"
+          variant={
+            pathname.startsWith("/new-property") ? "default" : "secondary"
+          }
+          className="hover:bg-primary hover:text-white transition-colors duration-300"
         >
           New Property
         </Button>

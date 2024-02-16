@@ -10,6 +10,9 @@ import AppLayout from "./components/AppLayout";
 import PropertiesPage from "./pages/PropertiesPage";
 import { ThemeProvider } from "./components/providers/ThemeProvider";
 import PropertyDetail from "./features/property/PropertyDetail";
+import PropertyFormPage from "./pages/PropertyFormPage";
+import ToastProvider from "./components/providers/ToastProvider";
+import ModalsProvider from "./components/providers/ModalsProvider";
 
 const router = createBrowserRouter([
   {
@@ -30,8 +33,8 @@ const router = createBrowserRouter([
         element: <PropertyDetail />,
       },
       {
-        path: "form",
-        element: <h1>Create a component for me</h1>,
+        path: "new-property",
+        element: <PropertyFormPage />,
       },
     ],
   },
@@ -50,6 +53,9 @@ function App() {
     <QueryClientProvider client={queryClient}>
       <ReactQueryDevtools initialIsOpen={false} />
       <ThemeProvider defaultTheme="system" storageKey="real-estate-mode">
+        <ToastProvider />
+        <ModalsProvider />
+
         <RouterProvider router={router} />
       </ThemeProvider>
     </QueryClientProvider>

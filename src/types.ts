@@ -9,3 +9,7 @@ export type PropertyItemType = {
   price: number;
   id?: string;
 };
+
+export type FormType = "create" | "edit";
+
+export type ModalType = "edit"; // TODO add "delete" later
