@@ -42,7 +42,9 @@ export async function getProperty(
   return data;
 }
 
-export async function createProperty(property: PropertyItemType) {
+export async function createProperty(
+  property: PropertyItemType
+): Promise<PropertyItemType> {
   const response = await fetch(
     `https://65ca332c3b05d29307dfed7b.mockapi.io/properties/`,
     {

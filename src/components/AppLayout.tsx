@@ -1,15 +1,24 @@
 import { Outlet } from "react-router-dom";
 
 import Navigation from "./Navigation";
+import MobileNavigation from "./MobileSidebar";
+
+import ToastProvider from "../components/providers/ToastProvider";
+import ModalsProvider from "../components/providers/ModalsProvider";
 
 export default function AppLayout() {
   return (
-    <div className="min-h-screen dark:bg-gray-800/70">
-      <Navigation />
+    <>
+      <ToastProvider />
+      <ModalsProvider />
+      <div className="min-h-screen dark:bg-gray-800/70">
+        <Navigation />
+        <MobileNavigation />
 
-      <main>
-        <Outlet />
-      </main>
-    </div>
+        <main>
+          <Outlet />
+        </main>
+      </div>
+    </>
   );
 }

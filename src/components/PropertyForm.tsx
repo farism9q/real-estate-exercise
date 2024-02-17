@@ -21,11 +21,12 @@ import { Button } from "./ui/button";
 import { Textarea } from "./ui/textarea";
 import { Minus, Plus } from "lucide-react";
 import { useModal } from "../hooks/useStoreModal";
+import { useNavigate } from "react-router-dom";
 
 const formSchema = z.object({
   title: z.string().min(1).max(40),
-  features: z.string(),
-  warranties: z.string(),
+  features: z.string().min(1),
+  warranties: z.string().min(1),
   description: z
     .string()
     .min(1, { message: "This field is required" })
@@ -46,6 +47,7 @@ export default function PropertyForm({ type, data = null }: PropertyFormProps) {
   const [warranties, setWarranties] = useState<string[]>(
     data?.warranties || []
   );
+  const navigate = useNavigate();
   const { createProperty, isCreating } = useCreateProperty();
   const { updateProperty, isUpdating } = useUpdateProperty();
   const { onClose } = useModal();
@@ -57,8 +59,8 @@ export default function PropertyForm({ type, data = null }: PropertyFormProps) {
     form.setValue("title", data?.title || "");
     form.setValue("address", data?.address || "");
     form.setValue("description", data?.description || "");
-    form.setValue("features", ""); // In this case, this field will not throw an error
-    form.setValue("warranties", "");
+    form.setValue("features", " ");
+    form.setValue("warranties", " ");
     form.setValue("price", data?.price.toString() || "");
   }, [data, type]);
 
@@ -67,16 +69,18 @@ export default function PropertyForm({ type, data = null }: PropertyFormProps) {
   });
 
   const onSubmit = (values: z.infer<typeof formSchema>) => {
-    if (type === "create") {
+    if (type === "create" && form.getValues("features")) {
       features.push(form.getValues("features"));
+    }
+    if (type === "create" && form.getValues("warranties")) {
       warranties.push(form.getValues("warranties"));
     }
 
-    if (type === "edit" && form.getValues("features")) {
+    if (type === "edit" && form.getValues("features").trim()) {
       features.push(form.getValues("features"));
     }
 
-    if (type === "edit" && form.getValues("warranties")) {
+    if (type === "edit" && form.getValues("warranties").trim()) {
       warranties.push(form.getValues("warranties"));
     }
 
@@ -88,16 +92,11 @@ export default function PropertyForm({ type, data = null }: PropertyFormProps) {
       price,
     };
 
-    console.log(submittedForm);
-
     if (type === "create") {
-      createProperty({
-        title: values.title,
-        address: values.address,
-        description: values.description,
-        features,
-        warranties,
-        price,
+      createProperty(submittedForm, {
+        onSuccess: ({ id }) => {
+          navigate(`/properties/${id}`);
+        },
       });
     }
 
@@ -105,12 +104,7 @@ export default function PropertyForm({ type, data = null }: PropertyFormProps) {
       updateProperty({
         id: data?.id!,
         updatedProperty: {
-          title: values.title,
-          address: values.address,
-          description: values.description,
-          features,
-          warranties,
-          price,
+          ...submittedForm,
           createdAt: new Date(Date.now()),
         },
       });
@@ -295,7 +289,7 @@ export default function PropertyForm({ type, data = null }: PropertyFormProps) {
                       onClick={() => {
                         if (!field.value) return;
 
-                        setFeatures(curr => [field.value, ...curr]);
+                        setWarranties(curr => [field.value, ...curr]);
                         form.setValue("warranties", "");
                       }}
                     >
@@ -334,9 +328,16 @@ export default function PropertyForm({ type, data = null }: PropertyFormProps) {
           </div>
 
           <div className="flex justify-end items-center gap-2">
-            <Button type="button" variant="secondary" disabled={isLoading}>
-              Close
-            </Button>
+            {type === "edit" && (
+              <Button
+                type="button"
+                variant="secondary"
+                disabled={isLoading}
+                onClick={() => onClose()}
+              >
+                Close
+              </Button>
+            )}
             <Button type="submit" disabled={isLoading}>
               {type === "create" ? "Create" : "Save"}
             </Button>

@@ -12,10 +12,14 @@ import "swiper/css/navigation";
 import "../.././index.css";
 import { Button } from "../../components/ui/button";
 import { useModal } from "../../hooks/useStoreModal";
+import { ChevronLeft } from "lucide-react";
+import { useNavigate } from "react-router-dom";
+import { formatCurrency } from "../../lib/utils";
 
 export default function PropertyDetail() {
   const { property, isLoading } = useProperty();
   const { onOpen } = useModal();
+  const navigate = useNavigate();
 
   if (isLoading)
     return <SkeletonPropertyItem screen="propertyDetail" length={1} />;
@@ -24,14 +28,26 @@ export default function PropertyDetail() {
 
   return (
     <div className="h-full flex flex-col py-6 overflow-hidden">
-      <div className="flex justify-end gap-2 items-center px-2">
-        <Button onClick={() => onOpen("edit", property)}>Edit</Button>
-        <Button
-          onClick={() => onOpen("delete", { id: property.id })}
-          variant={"destructive"}
-        >
-          Delete
-        </Button>
+      <div className="flex justify-between md:justify-end px-2 items-center">
+        <div className="md:hidden">
+          <button
+            onClick={() => {
+              navigate(-1);
+            }}
+          >
+            <ChevronLeft size={32} />
+          </button>
+        </div>
+
+        <div className="flex justify-end gap-2 items-center px-2">
+          <Button onClick={() => onOpen("edit", property)}>Edit</Button>
+          <Button
+            onClick={() => onOpen("delete", { id: property.id })}
+            variant={"destructive"}
+          >
+            Delete
+          </Button>
+        </div>
       </div>
 
       <div className="lg:px-[120px]">
@@ -51,7 +67,7 @@ export default function PropertyDetail() {
               className="px-[50px] py-[30px] lg:px-[70px]"
             >
               {" "}
-              <img src={img} alt={`${property.title} image`} />
+              <img src={img} alt={`${property.title}`} />
             </SwiperSlide>
           ))}
         </Swiper>
@@ -66,8 +82,13 @@ export default function PropertyDetail() {
           </div>
 
           <div className="flex flex-col gap-2 text-lg px-2 text-zinc-400">
-            <p className="w-[500px] lg:w-[1100px]">{property?.description}</p>
+            <p className="w-[400px] lg:w-[1100px] pr-2">
+              {property?.description}
+            </p>
             <p className="font-bold">{property.address}</p>
+            <p className="text-black dark:text-white text-lg font-bold">
+              {formatCurrency(property.price)}
+            </p>
           </div>
         </div>
 
