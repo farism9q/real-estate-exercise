@@ -82,7 +82,7 @@ export default function PropertyDetail() {
           </div>
 
           <div className="flex flex-col gap-2 text-lg px-2 text-zinc-400">
-            <p className="w-[400px] lg:w-[1100px] pr-2">
+            <p className="w-[400px] sm:w-[600px] lg:w-[1100px] pr-2">
               {property?.description}
             </p>
             <p className="font-bold">{property.address}</p>

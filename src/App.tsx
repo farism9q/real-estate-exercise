@@ -1,8 +1,4 @@
-import {
-  createBrowserRouter,
-  Navigate,
-  RouterProvider,
-} from "react-router-dom";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 
@@ -11,11 +7,12 @@ import PropertiesPage from "./pages/PropertiesPage";
 import { ThemeProvider } from "./components/providers/ThemeProvider";
 import PropertyDetail from "./features/property/PropertyDetail";
 import PropertyFormPage from "./pages/PropertyFormPage";
+import LandingPage from "./pages/LandingPage";
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <Navigate replace to="properties" />,
+    element: <LandingPage />,
   },
 
   {

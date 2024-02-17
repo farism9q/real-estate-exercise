@@ -13,7 +13,7 @@ import { useState } from "react";
 import { ModeToggle } from "./ModeToggle";
 
 export default function MobileNavigation() {
-  const [open, setOpen] = useState(true);
+  const [open, setOpen] = useState(false);
   const { pathname } = useLocation();
 
   return (
