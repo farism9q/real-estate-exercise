@@ -26,7 +26,7 @@ export default function MobileNavigation() {
         </SheetTrigger>
         <SheetContent
           side={"left"}
-          className="w-[400px] sm:w-[540px] flex flex-col"
+          className="w-[350px] sm:w-[420px] md:w-[540px] flex flex-col"
         >
           <SheetHeader>
             <SheetTitle className="text-primary text-center uppercase text-6xl sm:text-4xl py-6">
@@ -80,7 +80,7 @@ export default function MobileNavigation() {
               </a>
             </div>
           </div>
-          <div className="absolute bottom-0 right-0">
+          <div className="absolute bottom-0 right-5">
             <ModeToggle />
           </div>
         </SheetContent>
